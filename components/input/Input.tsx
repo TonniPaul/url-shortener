@@ -3,6 +3,7 @@ import inputStyle from "./input.module.css";
 import formBg from "../../public/assets/bg-shorten-desktop.svg";
 import { SetStateAction, useState } from "react";
 import axios from "axios";
+import { useEffect } from "react";
 
 interface LinksProp {
   id: string;
@@ -20,6 +21,12 @@ const Input = () => {
   const [copied, setCopied] = useState<boolean>(false);
   const [linksFromStorage, setLinksFromStorage] = useState<LinksProp[]>([]);
 
+  useEffect(() => {
+    // Read the links from local storage when the component mounts
+    const links = JSON.parse(localStorage.getItem("links") || "[]");
+    setLinksFromStorage(links);
+  }, []);
+
   const handleChange = (e: { target: { value: SetStateAction<string> } }) => {
     setMyUrl(e.target.value);
   };
@@ -35,6 +42,7 @@ const Input = () => {
         myUrl: myUrl,
         shortenedUrl: response.data.result.short_link,
       };
+      // setMyLinks(newLink);
       setMyUrl("");
 
       // Get the links array from local storage, or create an empty array if it doesn't exist yet
@@ -54,6 +62,7 @@ const Input = () => {
   // function to copy shortened url on click of the copy button
   const handleCopy = async () => {
     await navigator.clipboard.writeText(myLinks.shortenedUrl);
+    localStorage.setItem("links", JSON.stringify([]));
     setCopied(true);
   };
 
