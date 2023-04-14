@@ -14,8 +14,6 @@ interface LinksProp {
 const Input = () => {
   const [myUrl, setMyUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [copied, setCopied] = useState<boolean>(false);
-  const [clear, setClear] = useState<boolean>(false);
   const [linksFromStorage, setLinksFromStorage] = useState<LinksProp[]>([]);
 
   useEffect(() => {
@@ -41,7 +39,6 @@ const Input = () => {
         myUrl: myUrl,
         shortenedUrl: response.data.result.short_link,
       };
-      // setMyLinks(newLink);
       setMyUrl("");
 
       // Get the links array from local storage, or create an empty array if it doesn't exist yet
@@ -58,16 +55,26 @@ const Input = () => {
     }
   };
 
-  // function to copy shortened url on click of the copy button
-  const handleCopy = async (shortenedUrl: string, copied: boolean) => {
-    await navigator.clipboard.writeText(shortenedUrl);
-    setCopied(true);
+  // function to copy link on button click
+  const handleCopy = async (index: number) => {
+    const links = [...linksFromStorage];
+    await navigator.clipboard.writeText(links[index].shortenedUrl);
+    links[index].copied = true;
+    setLinksFromStorage(links);
   };
 
+  // function to delete individual link
+  const handleDelete = (id: string) => {
+    const links = [...linksFromStorage];
+    const updatedLinks = links.filter((link) => link.id !== id);
+    localStorage.setItem("links", JSON.stringify(updatedLinks));
+    setLinksFromStorage(updatedLinks);
+  };
+
+  // function to delete all links
   const handleClear = () => {
     setLinksFromStorage([]);
     localStorage.setItem("links", JSON.stringify([]));
-    setClear(true);
   };
 
   return (
@@ -89,51 +96,42 @@ const Input = () => {
         />
         <button>Shorten It!</button>
       </form>
-      <div>
-
-      {linksFromStorage.reverse().map((data) => {
-        return (
-          <div key={data.id} className={inputStyle.myLinks}>
-            <p>{data.myUrl.toLowerCase()}</p>
-            <p>{data.shortenedUrl}</p>
-            <button
-              onClick={() => handleCopy(data.shortenedUrl, data.copied)}
-              id={`${copied && inputStyle.copied}`}
-            >
-              {!copied ? "Copy" : "Copied!"}
-            </button>
-          </div>
-        );
-      }).reverse()}
+      <div className={inputStyle.links_div}>
+        {linksFromStorage
+          .map((data, index) => {
+            return (
+              <div key={data.id} className={inputStyle.myLinks}>
+                <p>{data.myUrl.toLowerCase()}</p>
+                <p>{data.shortenedUrl}</p>
+                <button
+                  onClick={() => handleCopy(index)}
+                  id={data.copied ? inputStyle.copied : ""}
+                >
+                  {!data.copied ? "Copy" : "Copied!"}
+                </button>
+                {data.copied && (
+                  <button
+                    onClick={() => {
+                      handleDelete(data.id);
+                    }}
+                    className={inputStyle.delete}
+                  >
+                    x
+                  </button>
+                )}
+              </div>
+            );
+          })
+          .reverse()}
       </div>
-      {linksFromStorage.length > 0 && <button onClick={handleClear} className={inputStyle.clearBtn}> Clear Links</button>}
+      {linksFromStorage.length > 2 && (
+        <button onClick={handleClear} className={inputStyle.clearBtn}>
+          Clear Links
+        </button>
+      )}
     </section>
   );
 };
 
 export default Input;
 
-
-// const handleCopy = async (shortenedUrl: string) => {
-//   await navigator.clipboard.writeText(shortenedUrl);
-//   setCopied(true);
-// };
-
-// // ...
-
-// {
-//   linksFromStorage.reverse().map((data) => {
-//     return (
-//       <div key={data.id} className={inputStyle.myLinks}>
-//         <p>{data.myUrl.toLowerCase()}</p>
-//         <p>{data.shortenedUrl}</p>
-//         <button
-//           onClick={() => handleCopy(data.shortenedUrl)}
-//           id={`${copied && inputStyle.copied}`}
-//         >
-//           {!copied ? "Copy" : "Copied!"}
-//         </button>
-//       </div>
-//     );
-//   });
-// }

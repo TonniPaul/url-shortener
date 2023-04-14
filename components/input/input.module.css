@@ -11,14 +11,30 @@
   background: var(--white);
   padding: 1rem 0;
   border-radius: 10px;
+  z-index: 1;
 }
+
 .errorMsg {
   border: 2px solid red !important;
 }
 
-#copied{
+.delete {
+  width: max-content !important;
+  background: red !important;
+  border-radius: 60% 0 70% 50% !important;
+  position: absolute !important;
+  right: -16px;
+  top: 0;
+}
+
+.delete:hover {
+  background: red !important;
+}
+
+#copied {
   background: var(--purple) !important;
 }
+
 .inputCard {
   background: var(--purple);
   padding: 2rem;
@@ -27,10 +43,14 @@
   left: 50%;
   transform: translateX(-50%);
   overflow: hidden;
+  margin-bottom: 4rem;
 }
 
 .myLinks {
   margin: 2rem auto;
+  position: relative;
+  display: block;
+  overflow: hidden;
 }
 
 .myLinks * {
@@ -48,6 +68,7 @@
 .myLinks :nth-child(2) {
   color: var(--skyBlue);
 }
+
 .clearBtn {
   background: none;
   border: none;
@@ -55,10 +76,11 @@
   display: block;
   justify-self: center;
   background: var(--purple);
-  color: var(--white) ;
+  color: var(--white);
   padding: 1rem 2rem;
   border-radius: 20px 8px 20px 8px;
 }
+
 .myLinks button {
   width: 90%;
   margin: auto 1rem;
@@ -98,7 +120,8 @@
 
 /* ========== MEDIA QUERIES ==========  */
 @media (min-width: 900px) {
-  .inputCard, .myLinks {
+  .inputCard,
+  .myLinks {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -106,9 +129,17 @@
     gap: 20px;
     top: -3rem;
   }
-  .myLinks {
-   margin: 0 auto 1rem;
+  .delete {
+    top: -25px;
+    right: -50px;
+      border-radius: 60% 50% 70% 0% !important;
+
   }
+  .myLinks {
+    margin: 3rem auto -1.5rem;
+    overflow: visible;
+  }
+
   .inputCard * {
     margin: 0 !important;
   }
@@ -121,5 +152,4 @@
   .inputCard button {
     width: 20%;
   }
-
 }
