@@ -1,0 +1,115 @@
+.input_container {
+  background: var(--grey);
+  position: relative;
+  padding: 6rem 0;
+}
+
+.myLinks,
+.inputCard {
+  width: 80%;
+  max-width: 1000px;
+  background: var(--white);
+  padding: 1rem 0;
+  border-radius: 10px;
+}
+.errorMsg {
+  border: 2px solid red !important;
+}
+
+#copied {
+  background: var(--purple) !important;
+}
+.inputCard {
+  background: var(--purple);
+  padding: 2rem;
+  position: absolute;
+  top: -5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
+.myLinks {
+  margin: 2rem auto;
+}
+
+.myLinks * {
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.myLinks :nth-child(1) {
+  border-bottom: 1px solid var(--grey);
+  color: var(--purple);
+  padding-top: 0;
+}
+
+.myLinks :nth-child(2) {
+  color: var(--skyBlue);
+}
+
+.myLinks button {
+  width: 90%;
+  margin: auto 1rem;
+  border-radius: inherit;
+  border: none;
+  background: var(--skyBlue);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.inputCard * {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: none;
+  font-size: 0.9375rem;
+  border-radius: inherit;
+}
+
+.inputCard input {
+  margin-bottom: 0.8rem;
+  outline: none;
+}
+
+.inputCard button {
+  background: var(--skyBlue);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.formBgImg {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
+
+/* ========== MEDIA QUERIES ==========  */
+@media (min-width: 900px) {
+  .inputCard, .myLinks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+    gap: 20px;
+    top: -3rem;
+  }
+  .myLinks {
+   margin: 0 auto 1rem;
+  }
+  .inputCard * {
+    margin: 0 !important;
+  }
+
+  .inputCard input {
+    width: 80%;
+  }
+
+  .myLinks button,
+  .inputCard button {
+    width: 20%;
+  }
+
+}
