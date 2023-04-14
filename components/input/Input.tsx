@@ -9,20 +9,17 @@ interface LinksProp {
   id: string;
   myUrl: string;
   shortenedUrl: string;
+  copied : boolean
 }
 const Input = () => {
   const [myUrl, setMyUrl] = useState("");
-  const [myLinks, setMyLinks] = useState<LinksProp>({
-    id: "",
-    myUrl: "",
-    shortenedUrl: "",
-  });
+
   const [errorMessage, setErrorMessage] = useState("");
   const [copied, setCopied] = useState<boolean>(false);
   const [linksFromStorage, setLinksFromStorage] = useState<LinksProp[]>([]);
 
   useEffect(() => {
-    // Read the links from local storage when the component mounts
+    // get the links from local storage when the component mounts
     const links = JSON.parse(localStorage.getItem("links") || "[]");
     setLinksFromStorage(links);
   }, []);
@@ -33,6 +30,8 @@ const Input = () => {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    if (!myUrl.trim()) return;
+    
     try {
       const response = await axios.post(
         `https://api.shrtco.de/v2/shorten?url=${myUrl}`
@@ -60,11 +59,14 @@ const Input = () => {
   };
 
   // function to copy shortened url on click of the copy button
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(myLinks.shortenedUrl);
-    localStorage.setItem("links", JSON.stringify([]));
-    setCopied(true);
+ const handleCopy = async (shortenedUrl: string, copied : boolean) => {
+   await navigator.clipboard.writeText(shortenedUrl);
+   setCopied(true);
   };
+  
+  const handleClear = () => {
+    localStorage.setItem("links", JSON.stringify([]));
+ }
 
   return (
     <section className={inputStyle.input_container}>
@@ -85,20 +87,51 @@ const Input = () => {
         />
         <button>Shorten It!</button>
       </form>
+      <div>
 
       {linksFromStorage.reverse().map((data) => {
         return (
           <div key={data.id} className={inputStyle.myLinks}>
             <p>{data.myUrl.toLowerCase()}</p>
             <p>{data.shortenedUrl}</p>
-            <button onClick={handleCopy} id={`${copied && inputStyle.copied}`}>
+            <button
+              onClick={() => handleCopy(data.shortenedUrl, data.copied)}
+              id={`${copied && inputStyle.copied}`}
+            >
               {!copied ? "Copy" : "Copied!"}
             </button>
           </div>
         );
-      })}
+      }).reverse()}
+      </div>
+      {linksFromStorage.length > 0 && <button onClick={handleClear} className={inputStyle.clearBtn}> Clear Links</button>}
     </section>
   );
 };
 
 export default Input;
+
+
+// const handleCopy = async (shortenedUrl: string) => {
+//   await navigator.clipboard.writeText(shortenedUrl);
+//   setCopied(true);
+// };
+
+// // ...
+
+// {
+//   linksFromStorage.reverse().map((data) => {
+//     return (
+//       <div key={data.id} className={inputStyle.myLinks}>
+//         <p>{data.myUrl.toLowerCase()}</p>
+//         <p>{data.shortenedUrl}</p>
+//         <button
+//           onClick={() => handleCopy(data.shortenedUrl)}
+//           id={`${copied && inputStyle.copied}`}
+//         >
+//           {!copied ? "Copy" : "Copied!"}
+//         </button>
+//       </div>
+//     );
+//   });
+// }

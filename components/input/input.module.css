@@ -16,7 +16,7 @@
   border: 2px solid red !important;
 }
 
-#copied {
+#copied{
   background: var(--purple) !important;
 }
 .inputCard {
@@ -48,7 +48,17 @@
 .myLinks :nth-child(2) {
   color: var(--skyBlue);
 }
-
+.clearBtn {
+  background: none;
+  border: none;
+  margin: auto !important;
+  display: block;
+  justify-self: center;
+  background: var(--purple);
+  color: var(--white) ;
+  padding: 1rem 2rem;
+  border-radius: 20px 8px 20px 8px;
+}
 .myLinks button {
   width: 90%;
   margin: auto 1rem;
