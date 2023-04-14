@@ -124,7 +124,7 @@ const Input = () => {
           })
           .reverse()}
       </div>
-      {linksFromStorage.length > 2 && (
+      {linksFromStorage.length > 1 && (
         <button onClick={handleClear} className={inputStyle.clearBtn}>
           Clear Links
         </button>
