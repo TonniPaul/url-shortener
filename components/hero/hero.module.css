@@ -4,6 +4,8 @@
 
 .hero_img {
    object-fit: contain;
+   display: block;
+   margin: auto;
 }
 
 .hero_text_cont {

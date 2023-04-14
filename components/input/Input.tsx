@@ -13,9 +13,9 @@ interface LinksProp {
 }
 const Input = () => {
   const [myUrl, setMyUrl] = useState("");
-
   const [errorMessage, setErrorMessage] = useState("");
   const [copied, setCopied] = useState<boolean>(false);
+  const [clear, setClear] = useState<boolean>(false);
   const [linksFromStorage, setLinksFromStorage] = useState<LinksProp[]>([]);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Input = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (!myUrl.trim()) return;
-    
+
     try {
       const response = await axios.post(
         `https://api.shrtco.de/v2/shorten?url=${myUrl}`
@@ -59,14 +59,16 @@ const Input = () => {
   };
 
   // function to copy shortened url on click of the copy button
- const handleCopy = async (shortenedUrl: string, copied : boolean) => {
-   await navigator.clipboard.writeText(shortenedUrl);
-   setCopied(true);
+  const handleCopy = async (shortenedUrl: string, copied: boolean) => {
+    await navigator.clipboard.writeText(shortenedUrl);
+    setCopied(true);
   };
-  
+
   const handleClear = () => {
+    setLinksFromStorage([]);
     localStorage.setItem("links", JSON.stringify([]));
- }
+    setClear(true);
+  };
 
   return (
     <section className={inputStyle.input_container}>

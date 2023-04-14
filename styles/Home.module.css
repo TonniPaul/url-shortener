@@ -41,7 +41,7 @@
 
 .boost_section div {
   position: absolute;
-  top: 30%;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -57,7 +57,7 @@
   background: var(--skyBlue);
   color: var(--white);
   padding: .5rem 2rem;
-  font-size: .88rem;
+  font-size: .8125rem;
   cursor: pointer;
   border-radius: 50px;
 }
@@ -90,9 +90,15 @@
     width: 50%;
     margin: auto;
   }
-
+  .boost_section div {
+    top: 30%;
+  }
   .boost_section div p {
     font-size: 1.875rem;
+  }
+
+  .boost_section div button {
+    font-size: 1rem;
   }
   .boostBgImg {
    height: auto;

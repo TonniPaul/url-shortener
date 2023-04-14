@@ -11,8 +11,8 @@
 }
 
 .nav_Links_flex {
-  position: absolute;
-  bottom: -280px;
+  position: fixed;
+  top: 70px;
   right: 50%;
   transform: translateX(13%) scale(0);
   list-style: none;
@@ -23,6 +23,7 @@
   width: 70%;
   text-align: center;
   transition: 0.7s ease-in-out;
+  z-index: 5;
 }
 
 .show_menu {
@@ -70,7 +71,7 @@
     background: none;
     color: var(--black);
     position: relative;
-    bottom: 0;
+    top: 0;
     transform: none;
     right: 0;
     padding: 0;

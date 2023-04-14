@@ -33,6 +33,10 @@ a {
 .main_container {
   position: relative;
 }
+button  {
+  cursor: pointer;
+  border: none;
+}
 button:hover{
   background: #30c59b !important;
   transition: .5s ease-in-out;
