@@ -14,10 +14,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Shortly URL shortening web app</title>
+        <title>Shortly: URL Shortener</title>
         <meta
           name="description"
-          content="Generate shorter links for your existing links || Coded by Paul Oluwatoni Ariyo-Adeoye (TonniPaul"
+          content="Shortly: The quickest way to shorten your URLs. || Coded by Paul Oluwatoni Ariyo-Adeoye (TonniPaul"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
