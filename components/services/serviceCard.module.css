@@ -36,4 +36,7 @@
       left: -10px;
       transform: translateX(0);
    }
+   .card_main_container {
+      text-align: left;
+   }
 }

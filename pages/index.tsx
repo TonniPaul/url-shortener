@@ -5,10 +5,33 @@ import styles from '@/styles/Home.module.css'
 import Hero from "@/components/hero/Hero";
 import Input from "@/components/input/Input";
 import boostBg from "../public/assets/bg-boost-desktop.svg";
-
 import ServiceCard from "@/components/services/ServiceCard";
+import { v4 as uuid } from "uuid";
 
 const inter = Inter({ subsets: ["latin"] });
+const cardData = [
+  {
+    id: uuid(),
+    image: "assets/icon-brand-recognition.svg",
+    title: "Brand Recognition",
+    description:
+      "Boost your brand recognition with each click. Generic links don’t mean a thing. Branded links help instil confidence in your content.",
+  },
+  {
+    id: uuid(),
+    image: "assets/icon-detailed-records.svg",
+    title: "Detailed Records",
+    description:
+      "Gain insights into who is clicking your links. Knowing when and where people engage with your content helps inform better decisions..",
+  },
+  {
+    id: uuid(),
+    image: "assets/icon-fully-customizable.svg",
+    title: "Fully Customizable",
+    description:
+      "Improve brand awareness and content discoverability through customizable links, supercharging audience engagement.",
+  },
+];
 
 export default function Home() {
   return (
@@ -32,9 +55,16 @@ export default function Home() {
             statistics dashboard.
           </p>
           <div className={styles.serviceCard_sub_container}>
-            <ServiceCard />
-            <ServiceCard />
-            <ServiceCard />
+            {cardData.map(({ id, image, title, description }) => {
+              return (
+                <ServiceCard
+                  key={id}
+                  image={image}
+                  title={title}
+                  description={description}
+                />
+              );
+            })}
 
             <hr className={styles.line} />
           </div>

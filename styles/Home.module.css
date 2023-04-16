@@ -76,7 +76,7 @@
 
   .serviceCard_sub_container div:nth-child(3) {
     top: 100px;
-    margin-bottom: 5rem;
+    height: max-content;
   }
 
   .line {
