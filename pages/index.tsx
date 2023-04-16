@@ -6,6 +6,7 @@ import Hero from "@/components/hero/Hero";
 import Input from "@/components/input/Input";
 import boostBg from "../public/assets/bg-boost-desktop.svg";
 import ServiceCard from "@/components/services/ServiceCard";
+import { v4 as uuid } from "uuid";
 import crypto from "crypto";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,7 +26,7 @@ const cardData = [
       "Gain insights into who is clicking your links. Knowing when and where people engage with your content helps inform better decisions..",
   },
   {
-    id: crypto.randomBytes(1).toString("hex"),
+    id: crypto.randomBytes(16).toString("hex"),
     image: "assets/icon-fully-customizable.svg",
     title: "Fully Customizable",
     description:
@@ -34,7 +35,6 @@ const cardData = [
 ];
 
 export default function Home() {
-  console.log(cardData);
   return (
     <>
       <Head>
