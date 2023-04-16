@@ -6,26 +6,26 @@ import Hero from "@/components/hero/Hero";
 import Input from "@/components/input/Input";
 import boostBg from "../public/assets/bg-boost-desktop.svg";
 import ServiceCard from "@/components/services/ServiceCard";
-import { v4 as uuid } from "uuid";
+import crypto from "crypto";
 
 const inter = Inter({ subsets: ["latin"] });
 const cardData = [
   {
-    id: uuid(),
+    id: crypto.randomBytes(16).toString("hex"),
     image: "assets/icon-brand-recognition.svg",
     title: "Brand Recognition",
     description:
       "Boost your brand recognition with each click. Generic links don’t mean a thing. Branded links help instil confidence in your content.",
   },
   {
-    id: uuid(),
+    id: crypto.randomBytes(16).toString("hex"),
     image: "assets/icon-detailed-records.svg",
     title: "Detailed Records",
     description:
       "Gain insights into who is clicking your links. Knowing when and where people engage with your content helps inform better decisions..",
   },
   {
-    id: uuid(),
+    id: crypto.randomBytes(1).toString("hex"),
     image: "assets/icon-fully-customizable.svg",
     title: "Fully Customizable",
     description:
@@ -34,6 +34,7 @@ const cardData = [
 ];
 
 export default function Home() {
+  console.log(cardData);
   return (
     <>
       <Head>
