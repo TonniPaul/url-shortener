@@ -19,7 +19,6 @@ const Input = () => {
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("Getting local");
     const storedLinks = JSON.parse(localStorage.getItem("links") || "[]");
     if (storedLinks.length > 0) {
       console.log(storedLinks);
@@ -28,8 +27,6 @@ const Input = () => {
   }, []);
 
   useEffect(() => {
-    console.log("New Local added");
-    console.log(links.length);
     localStorage.setItem("links", JSON.stringify(links));
   }, [links]);
 
@@ -87,9 +84,6 @@ const Input = () => {
       updatedLinks[index].copied = false;
       setLinks(updatedLinks);
     }, 3000);
-
-    // update local storage
-    // localStorage.setItem("links", JSON.stringify(updatedLinks));
   };
 
   // function to delete individual link
