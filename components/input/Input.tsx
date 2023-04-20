@@ -1,36 +1,61 @@
 import Image from "next/image";
 import inputStyle from "./input.module.css";
 import formBg from "../../public/assets/bg-shorten-desktop.svg";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+import * as yup from "yup";
 
-interface LinksProp {
+interface Links {
   id: string;
   myUrl: string;
   shortenedUrl: string;
-  copied : boolean
+  copied: boolean;
 }
 const Input = () => {
   const [myUrl, setMyUrl] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [linksFromStorage, setLinksFromStorage] = useState<LinksProp[]>([]);
+  const [links, setLinks] = useState<Links[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   useEffect(() => {
-    // get the links from local storage when the component mounts
-    const links = JSON.parse(localStorage.getItem("links") || "[]");
-    setLinksFromStorage(links);
+    console.log("Getting local");
+    const storedLinks = JSON.parse(localStorage.getItem("links") || "[]");
+    if (storedLinks.length > 0) {
+      console.log(storedLinks);
+      setLinks(storedLinks);
+    }
   }, []);
 
-  const handleChange = (e: { target: { value: SetStateAction<string> } }) => {
+  useEffect(() => {
+    console.log("New Local added");
+    console.log(links.length);
+    localStorage.setItem("links", JSON.stringify(links));
+  }, [links]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsCopied(false);
+    }, 3000);
+
+    // return clearTimeout(timer);
+  }, [isCopied]);
+
+  const linkSchema = yup.object().shape({
+    myUrl: yup
+      .string()
+      .url("Please enter a valid URL")
+      .required("URL is required"),
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMyUrl(e.target.value);
   };
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (!myUrl.trim()) return;
-
     try {
+      await linkSchema.validate({ myUrl });
       const response = await axios.post(
         `https://api.shrtco.de/v2/shorten?url=${myUrl}`
       );
@@ -38,43 +63,44 @@ const Input = () => {
         id: crypto.randomUUID(),
         myUrl: myUrl,
         shortenedUrl: response.data.result.short_link,
+        copied: false,
       };
       setMyUrl("");
-
-      // Get the links array from local storage, or create an empty array if it doesn't exist yet
-      const links = JSON.parse(localStorage.getItem("links") || "[]");
-
-      // Add the new link to the links array and store it in local storage
-      const updatedLinks = [...links, newLink];
-      localStorage.setItem("links", JSON.stringify(updatedLinks));
-
-      // Update the links state with the new link
-      setLinksFromStorage(updatedLinks);
-    } catch (error) {
-      console.log(error);
+      setLinks([...links, newLink]);
+    } catch (error: any) {
+      setErrorMessage(error.message);
     }
   };
 
   // function to copy link on button click
   const handleCopy = async (index: number) => {
-    const links = [...linksFromStorage];
     await navigator.clipboard.writeText(links[index].shortenedUrl);
-    links[index].copied = true;
-    setLinksFromStorage(links);
+
+    const updatedLinks = [...links];
+    updatedLinks[index].copied = true;
+
+    setIsCopied(true);
+    setLinks(updatedLinks);
+
+    // set timeout to update the copied state back to false after 3 seconds
+    setTimeout(() => {
+      updatedLinks[index].copied = false;
+      setLinks(updatedLinks);
+    }, 3000);
+
+    // update local storage
+    // localStorage.setItem("links", JSON.stringify(updatedLinks));
   };
 
   // function to delete individual link
   const handleDelete = (id: string) => {
-    const links = [...linksFromStorage];
     const updatedLinks = links.filter((link) => link.id !== id);
-    localStorage.setItem("links", JSON.stringify(updatedLinks));
-    setLinksFromStorage(updatedLinks);
+    setLinks(updatedLinks);
   };
 
   // function to delete all links
   const handleClear = () => {
-    setLinksFromStorage([]);
-    localStorage.setItem("links", JSON.stringify([]));
+    setLinks([]);
   };
 
   return (
@@ -91,13 +117,13 @@ const Input = () => {
           id="link"
           placeholder="Shorten a link here..."
           value={myUrl}
-          className={`${errorMessage && inputStyle.errorMsg}`}
           onChange={handleChange}
         />
+        {/* {<small>{errorMessage}</small>} */}
         <button>Shorten It!</button>
       </form>
       <div className={inputStyle.links_div}>
-        {linksFromStorage
+        {links
           .map((data, index) => {
             return (
               <div key={data.id} className={inputStyle.myLinks}>
@@ -105,9 +131,9 @@ const Input = () => {
                 <p>{data.shortenedUrl}</p>
                 <button
                   onClick={() => handleCopy(index)}
-                  id={data.copied ? inputStyle.copied : ""}
+                  id={isCopied && data.copied ? inputStyle.copied : ""}
                 >
-                  {!data.copied ? "Copy" : "Copied!"}
+                  {isCopied && data.copied ? "Copied!" : "Copy"}
                 </button>
                 {data.copied && (
                   <button
@@ -124,7 +150,7 @@ const Input = () => {
           })
           .reverse()}
       </div>
-      {linksFromStorage.length > 1 && (
+      {links.length > 1 && (
         <button onClick={handleClear} className={inputStyle.clearBtn}>
           Clear Links
         </button>
@@ -134,4 +160,5 @@ const Input = () => {
 };
 
 export default Input;
+
 

@@ -32,6 +32,13 @@ const cardData = [
     description:
       "Improve brand awareness and content discoverability through customizable links, supercharging audience engagement.",
   },
+  {
+    id: crypto.randomBytes(16).toString("hex"),
+    image: "assets/icon-fully-customizable.svg",
+    title: "Fully Customizable",
+    description:
+      "Improve brand awareness and content discoverability through customizable links, supercharging audience engagement.",
+  },
 ];
 
 export default function Home() {
